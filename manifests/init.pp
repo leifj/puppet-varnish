@@ -26,13 +26,13 @@ class varnish ($domain = undef,$backends = undef) {
       path       => '/etc/varnish/default.vcl',
       ensure     => file,
       require    => Package['varnish'],
-      content    => template('samlbits/vcl.erb')
+      content    => template('varnish/vcl.erb')
    }
    file {'varnish-settings':
       path       => '/etc/default/varnish',
       ensure     => file,
       require    => Package['varnish'],
-      content    => template('samlbits/varnish.erb')
+      content    => template('varnish/varnish.erb')
    }
    file {'varnish.vcl':
       path       => '/etc/varnish/varnish.vcl',
