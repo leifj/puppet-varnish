@@ -46,6 +46,7 @@ class varnish ($domain = undef,$backends = undef) {
    xinetd::service {"http-alt":
       port       => "8080",
       server     => '/etc/varnish/monitor.sh',
+      bind       => '127.0.0.1',
    }
    file {'varnish.vcl':
       path       => '/etc/varnish/varnish.vcl',
