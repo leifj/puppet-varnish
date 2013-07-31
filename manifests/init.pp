@@ -46,6 +46,7 @@ class varnish ($domain = undef,$backends = undef) {
    xinetd::service {"varnish-monitor-server":
       port       => "9999",
       server     => '/etc/varnish/monitor.sh',
+      type       => 'UNLISTED'
    }
    file {'varnish.vcl':
       path       => '/etc/varnish/varnish.vcl',
