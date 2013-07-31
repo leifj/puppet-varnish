@@ -44,7 +44,7 @@ class varnish ($domain = undef,$backends = undef) {
    }
    include xinetd
    xinetd::service {"varnish-monitor-server":
-      port       => "9999",
+      port       => "8080",
       server     => '/etc/varnish/monitor.sh',
    }
    file {'varnish.vcl':
