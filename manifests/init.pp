@@ -43,7 +43,8 @@ class varnish ($domain = undef,$backends = undef) {
       content    => template('varnish/monitor.erb')
    }
    include xinetd
-   xinetd::service {"varnish-monitor-server":
+   xinetd::service {"varnish-monitor-server": ensure => absent}
+   xinetd::service {"http-alt":
       port       => "8080",
       server     => '/etc/varnish/monitor.sh',
    }
