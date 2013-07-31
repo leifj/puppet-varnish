@@ -8,10 +8,20 @@ backend <%= name %> {
 <% end -%>
 
 sub vcl_recv {
+  set req.grace = 10h;
+  if (req.http.host == 'localhost') {
+    set obj.http.Content-Type = "text/plain";
+    synthetic { "ok" };
+    return (deliver);
+  }
 <% @backends.each do |name,host| -%>
   if (req.http.host == "<%= name %>.<%= @domain %>") {
     set req.http.host = "<%= host %>";
     set req.backend = <%= name %>;
-  } 
+  }
 <% end -%>
+}
+
+sub vcl_fetch {
+  set beresp.grace = 10h;
 }
