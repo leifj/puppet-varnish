@@ -36,7 +36,7 @@ class varnish ($domain = undef,$backends = undef) {
       content    => template('varnish/varnish.erb')
    }
    file {'varnish-monitor':
-      path       => /etc/varnish/monitor.sh,
+      path       => '/etc/varnish/monitor.sh',
       ensure     => file,
       mode       => 0755,
       require    => Package['varnish'],
@@ -45,7 +45,7 @@ class varnish ($domain = undef,$backends = undef) {
    include xinetd
    xinetd::service {"varnish-monitor-server":
       port       => "9999",
-      server     => "/etc/varnish/monitor.sh",
+      server     => '/etc/varnish/monitor.sh',
    }
    file {'varnish.vcl':
       path       => '/etc/varnish/varnish.vcl',
