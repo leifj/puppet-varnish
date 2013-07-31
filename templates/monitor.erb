@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Shell script usable as web "server"
+# Code mostly copied from web, my contribution was to add the sanitation.
+#
+
+###
+### PARSE THE REQUEST
+###
+
+# first line is request
+read request
+
+# ignore the header
+while /bin/true; do
+        read header
+        [ "$header" == $'\r' ] && break
+done
+
+# extract url, path, and query from request
+url="${request#GET }"
+url="${url% HTTP/*}"
+path="${url%%\?*}"
+query="${url#*\?}"
+
+# make p_variables out of parameter string
+for i in $(echo $query | sed 's/\&/\n/g') ; do
+        key=${i%%=*}
+        key=$(echo $key | sed 's/[^a-z_]//g')  # sanitize, accept lowercase only + underscore
+        value=${i#*=}
+        value=$(echo $value | tr -d ';''\001'-'\011''\013''\014''\016'-'\037''\200'-'\377') # sanitize, remove non-printing chars and semicolon
+        eval "p_$key=$value"
+done
+
+###
+### DO THE WORK
+###
+
+echo -en "Content-Type: text/plain; charset=utf-8\r\n"
+echo -en "Connection: close\r\n"
+echo -en "Content-Length: $(wc -c < "$tmpfile")\r\n\r\n"
+varnishadm -T localhost:6082 -S /etc/varnish/secret backend.list
