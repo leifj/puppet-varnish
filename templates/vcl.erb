@@ -9,7 +9,7 @@ backend <%= name %> {
 
 sub vcl_recv {
   set req.grace = 10h;
-  if (req.http.host == 'localhost') {
+  if (req.http.host == "localhost") {
     set obj.http.Content-Type = "text/plain";
     synthetic { "ok" };
     return (deliver);
