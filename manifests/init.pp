@@ -6,7 +6,7 @@ include ufw
 
 class varnish ($domain = undef,$backends = undef) {
    package {'apache2':
-      ensure => "absent"
+      ensure => "purged"
    }
    service {'apache2':
       ensure => "stopped"
