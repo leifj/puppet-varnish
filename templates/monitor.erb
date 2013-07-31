@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo -en "HTTP/1.0 200 OK\r\n"
+echo -en "Server: varnish monitor\r\n"
 echo -en "Content-Type: text/plain; charset=utf-8\r\n"
 echo -en "Connection: close\r\n\r\n"
 varnishadm -T localhost:6082 -S /etc/varnish/secret backend.list
