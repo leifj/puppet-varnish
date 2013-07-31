@@ -11,8 +11,9 @@ class varnish ($domain = undef,$backends = undef) {
    service {'apache2':
       ensure => "stopped"
    }
+   pt::ppa { 'ppa:ondrej/varnish': }
    package {'varnish':
-      ensure => "installed"
+      ensure => "latest"
    }
    service {'varnish':
       name       => 'varnish',
