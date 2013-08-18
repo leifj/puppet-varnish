@@ -25,12 +25,6 @@ director <%= name %> round-robin {
 
 backend <%= name %> {
     .host = "<%= @backends[name] %>";
-    .probe = {
-       .url = "/";
-       .timeout = 3s;
-       .interval = 10s;
-       .threshold = 3;
-     }
 }
 
 <% end -%>
