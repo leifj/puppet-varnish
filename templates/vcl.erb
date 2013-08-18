@@ -10,7 +10,6 @@ director <%= name %> round-robin {
   {
      .backend = {
        .host = "<%= uri.host %>";
-       .port = "<%= uri.scheme %>";
        .probe = {
          .url = "<%= uri.path %>";
        }
