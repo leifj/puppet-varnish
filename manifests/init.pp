@@ -4,7 +4,7 @@ Exec {
 
 include ufw
 
-class varnish ($domain = undef,$backends = undef,$vhost=undef) {
+class varnish ($domain = undef,$backends = undef, $vhosts=undef) {
   package {'apache2':
     ensure => purged
   }

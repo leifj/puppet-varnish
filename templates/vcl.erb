@@ -43,9 +43,9 @@ sub vcl_recv {
     set req.backend = status;
   }
 
-<% @vhost.keys.sort.each do |name| -%>
-  if (req.http.host == "<%= name %>.<%= @domain %>" || req.http.host == "<%= @vhost[name] %>") {
-    set req.http.host = "<%= @vhost[name] %>";
+<% @vhosts.keys.sort.each do |name| -%>
+  if (req.http.host == "<%= name %>.<%= @domain %>" || req.http.host == "<%= @vhosts[name] %>") {
+    set req.http.host = "<%= @vhosts[name] %>";
     set req.backend = <%= name %>;
   }
 <% end -%>
