@@ -22,6 +22,9 @@ director <%= name %> round-robin {
 
 backend <%= name %> {
     .host = "<%= @backends[name] %>";
+    .probe = {
+       .url = "/";
+     }
 }
 
 <% end -%>
