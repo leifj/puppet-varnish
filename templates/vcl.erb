@@ -12,6 +12,9 @@ director <%= name %> round-robin {
        .host = "<%= uri.host %>";
        .probe = {
          .url = "<%= uri.path %>";
+         .timeout = 3s;
+         .interval = 10s;
+         .threshold = 3;
        }
      }
   }
@@ -24,6 +27,9 @@ backend <%= name %> {
     .host = "<%= @backends[name] %>";
     .probe = {
        .url = "/";
+       .timeout = 3s;
+       .interval = 10s;
+       .threshold = 3;
      }
 }
 
