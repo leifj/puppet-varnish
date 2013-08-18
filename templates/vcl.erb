@@ -1,9 +1,31 @@
+<% require 'uri' -%>
 
-<% @backends.each do |name,host| -%>
+<% @backends.keys.sort.each do |name| -%>
+
+<% if @backends[name].kind_of?(Array) -%>
+
+director <%= name %> round-robin {
+<% @backends[name].sort.each do |member| -%>
+  <% uri = URI(member) -%>
+  {
+     .backend = {
+       .host = "<%= uri.host %>";
+       .port = "<%= uri.scheme %>";
+       .probe = {
+         .url = "<%= uri.path %>";
+       }
+     }
+  }
+<% end -%>
+}
+
+<% else -%>
 
 backend <%= name %> {
-    .host = "<%= host %>";
+    .host = "<%= @backends[name] %>";
 }
+
+<% end -%>
 
 <% end -%>
 
@@ -20,9 +42,10 @@ sub vcl_recv {
   if (req.http.host == "localhost") {
     set req.backend = status;
   }
-<% @backends.each do |name,host| -%>
-  if (req.http.host == "<%= name %>.<%= @domain %>") {
-    set req.http.host = "<%= host %>";
+
+<% @vhost.keys.sort.each do |name| -%>
+  if (req.http.host == "<%= name %>.<%= @domain %>" || req.http.host == "<%= @vhost[name] %>") {
+    set req.http.host = "<%= @vhost[name] %>";
     set req.backend = <%= name %>;
   }
 <% end -%>
