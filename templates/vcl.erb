@@ -25,7 +25,7 @@ director <%= name %> round-robin {
 <% else -%>
 
 backend <%= name %> {
-    <% uri = URI(member) -%>
+    <% uri = URI(@backends[name]) -%>
     .host = "<%= uri.host %>";
     .port = <%= uri.port %>;
 }
