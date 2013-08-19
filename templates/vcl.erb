@@ -10,6 +10,7 @@ director <%= name %> round-robin {
   {
      .backend = {
        .host = "<%= uri.host %>";
+       .port = <%= uri.port %>;
        .probe = {
          .url = "<%= uri.path %>";
          .timeout = 3s;
@@ -24,7 +25,9 @@ director <%= name %> round-robin {
 <% else -%>
 
 backend <%= name %> {
-    .host = "<%= @backends[name] %>";
+    <% uri = URI(member) -%>
+    .host = "<%= uri.host %>";
+    .port = <%= uri.port %>;
 }
 
 <% end -%>
@@ -47,8 +50,8 @@ sub vcl_recv {
     set req.backend = status;
   }
 
-<% @vhosts.keys.sort.each do |name| -%>
-  if (req.http.host == "<%= name %>.<%= @domain %>" || req.http.host == "<%= @vhosts[name] %>") {
+<% @backends.keys.sort.each do |name| -%>
+  if (req.http.host == "<%= name %>.<%= @domain %>"<% if name in @vhosts.keys -%> || req.http.host == "<%= @vhosts[name] %>"<% end -%>) {
     set req.http.host = "<%= @vhosts[name] %>";
     set req.backend = <%= name %>;
   }
