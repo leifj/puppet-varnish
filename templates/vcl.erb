@@ -10,7 +10,7 @@ director <%= name %> round-robin {
   {
      .backend = {
        .host = "<%= uri.host %>";
-       .port = <%= uri.port %>;
+       .port = "<%= uri.port %>";
        .probe = {
          .url = "<%= uri.path %>";
          .timeout = 3s;
@@ -27,7 +27,7 @@ director <%= name %> round-robin {
 backend <%= name %> {
     <% uri = URI(@backends[name]) -%>
     .host = "<%= uri.host %>";
-    .port = <%= uri.port %>;
+    .port = "<%= uri.port %>";
 }
 
 <% end -%>
