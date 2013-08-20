@@ -10,7 +10,9 @@ director <%= name %> round-robin {
   {
      .backend = {
        .host = "<%= uri.host %>";
-       <% if @vhosts.keys.include?(name) -%>.host_header = "<%= @vhosts[name] %>";<% end -%>
+<% if @vhosts.keys.include?(name) -%>
+       .host_header = "<%= @vhosts[name] %>";
+<% end -%>
        .port = "<%= uri.port %>";
        .probe = {
          .url = "<%= uri.path %>";
@@ -28,7 +30,9 @@ director <%= name %> round-robin {
 backend <%= name %> {
     <% uri = URI(@backends[name]) -%>
     .host = "<%= uri.host %>";
-    <% if @vhosts.keys.include?(name) -%>.host_header = "<%= @vhosts[name] %>";<% end -%>
+<% if @vhosts.keys.include?(name) -%>
+    .host_header = "<%= @vhosts[name] %>";
+<% end -%>
     .port = "<%= uri.port %>";
     .probe = {
         .url = "<%= uri.path %>";
