@@ -13,6 +13,7 @@ director <%= name %> round-robin {
        .port = "<%= uri.port %>";
        .probe = {
          .url = "<%= uri.path %>";
+         <% if @vhosts.keys.include?(name) -%>.host = "<%= @vhosts[name] %>";<% end -%>
          .timeout = 3s;
          .interval = 10s;
          .threshold = 3;
@@ -28,6 +29,13 @@ backend <%= name %> {
     <% uri = URI(@backends[name]) -%>
     .host = "<%= uri.host %>";
     .port = "<%= uri.port %>";
+    .probe = {
+        .url = "<%= uri.path %>";
+        <% if @vhosts.keys.include?(name) -%>.host = "<%= @vhosts[name] %>";<% end -%>
+        .timeout = 3s;
+        .interval = 10s;
+        .threshold = 3;
+    } 
 }
 
 <% end -%>
