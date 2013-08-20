@@ -60,4 +60,5 @@ sub vcl_recv {
 
 sub vcl_fetch {
   set beresp.grace = 10h;
+  set beresp.do_stream = true;
 }
