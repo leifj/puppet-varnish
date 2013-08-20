@@ -73,4 +73,7 @@ sub vcl_recv {
 sub vcl_fetch {
   set beresp.grace = 10m;
   set beresp.do_stream = true;
+  if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml") {
+     set beresp.do_gzip = true;
+  }
 }
