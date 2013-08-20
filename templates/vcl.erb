@@ -55,7 +55,7 @@ backend status {
 }
 
 sub vcl_recv {
-  set req.grace = 10h;
+  set req.grace = 10m;
   remove req.http.Cookie;
 
   if (req.http.host == "localhost") {
@@ -71,6 +71,6 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-  set beresp.grace = 10h;
+  set beresp.grace = 10m;
   set beresp.do_stream = true;
 }
