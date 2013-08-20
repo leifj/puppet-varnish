@@ -16,7 +16,7 @@ director <%= name %> round-robin {
        .port = "<%= uri.port %>";
        .probe = {
          .url = "<%= uri.path %>";
-         .timeout = 3s;
+         .timeout = 30s;
          .interval = 10s;
          .threshold = 3;
        }
@@ -36,7 +36,7 @@ backend <%= name %> {
     .port = "<%= uri.port %>";
     .probe = {
         .url = "<%= uri.path %>";
-        .timeout = 3s;
+        .timeout = 30s;
         .interval = 10s;
         .threshold = 3;
     } 
