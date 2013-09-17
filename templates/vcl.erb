@@ -54,6 +54,17 @@ backend status {
    .between_bytes_timeout = 10s;
 }
 
+sub normalize_req_url {
+
+    # Strip out Google Analytics campaign variables. They are only needed
+    # by the javascript running on the page
+    # utm_source, utm_medium, utm_campaign, gclid, ...
+    if(req.url ~ "(\?|&)(gclid|cx|ie|cof|siteurl|zanpid|origin|utm_[a-z]+|mr:[A-z]+)=") {
+        set req.url = regsuball(req.url, "(gclid|cx|ie|cof|siteurl|zanpid|origin|utm_[a-z]+|mr:[A-z]+)=[%.-_A-z0-9]+&?", "");
+    }
+    set req.url = regsub(req.url, "(\?&?)$", "");
+}
+
 sub vcl_recv {
   unset req.http.cookie;
   set req.grace = 1h;
@@ -69,13 +80,14 @@ sub vcl_recv {
   }
 <% end -%>
 
-  set req.url = regsub(req.url, "\?.*$", "");
+  call normalize_req_url;
+
 }
 
 sub vcl_fetch {
   set beresp.grace = 1h;
   set beresp.do_stream = true;
-  if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml") {
+  if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml" || beresp.http.content-type ~ "javascript") {
      set beresp.do_gzip = true;
   }
 }
