@@ -62,14 +62,14 @@ sub vcl_recv {
     set req.backend = status;
   }
   
-  set req.url = regsub(req.url, "\?.*$", "");
-
 <% @backends.keys.sort.each do |name| -%>
   if (req.http.host == "<%= name %>.<%= @domain %>"<% if @vhosts.keys.include?(name) -%> || req.http.host == "<%= @vhosts[name] %>"<% end -%>) {
     set req.http.host = "<%= @vhosts[name] %>";
     set req.backend = <%= name %>;
   }
 <% end -%>
+
+  set req.url = regsub(req.url, "\?.*$", "");
 }
 
 sub vcl_fetch {
