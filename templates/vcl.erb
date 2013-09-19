@@ -65,7 +65,44 @@ sub normalize_req_url {
     set req.url = regsub(req.url, "(\?&?)$", "");
 }
 
+acl purge {
+        "localhost";
+}
+
+sub vcl_recv_purge {
+        if (req.request == "PURGE") {
+                if (!client.ip ~ purge) {
+                        error 405 "Not allowed.";
+                }
+                return (lookup);
+        }
+}
+
+sub vcl_hit_purge {
+        if (req.request == "PURGE") {
+                purge;
+                error 200 "Purged.";
+        }
+}
+
+sub vcl_hit {
+  call vcl_hit_purge;
+}
+
+sub vcl_miss_purge {
+        if (req.request == "PURGE") {
+                purge;
+                error 200 "Purged.";
+        }
+}
+
+sub vcl_miss {
+  call vcl_miss_purge;
+}
+
 sub vcl_recv {
+  call vcl_recv_purge;
+
   unset req.http.cookie;
   set req.grace = 1h;
 
@@ -85,6 +122,8 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+  call vcl_fetch_purge;
+
   set beresp.grace = 1h;
   set beresp.do_stream = true;
   if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml" || beresp.http.content-type ~ "javascript") {
