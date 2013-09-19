@@ -122,8 +122,6 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-  call vcl_fetch_purge;
-
   set beresp.grace = 1h;
   set beresp.do_stream = true;
   if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml" || beresp.http.content-type ~ "javascript") {
