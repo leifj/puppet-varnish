@@ -7,14 +7,11 @@ include ufw
 class varnish ($domain = undef,$backends = undef, $vhosts=undef) {
   package {'apache2':
     ensure => purged
-  }
-  service {'apache2':
-    ensure => stopped
-  }
-  apt::ppa { 'ppa:ondrej/varnish': }
+  } ->
+  apt::ppa { 'ppa:ondrej/varnish': } ->
   package {'varnish':
     ensure => latest
-  }
+  } ->
   service {'varnish':
     ensure     => running,
     name       => 'varnish',
