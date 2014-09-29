@@ -1,0 +1,14 @@
+{
+  "name": "puppet-varnish",
+  "version": "1.0.0",
+  "author": "Leif Joahansson",
+  "summary": "A puppet module for varnish for the samlbits.net CDN",
+  "license": "BSD",
+  "source": "git://github.com/samlbits/puppet-varnish",
+  "project_page": "https://github.com/samlbits/puppet-varnish",
+  "issues_url": "https://github.com/samlbits/puppet-varnish/issues",
+  "description": "Does setup of varnish and produces a vcl file for use by samlbits.net",
+  "dependencies": [
+  
+  ]
+}
