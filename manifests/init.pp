@@ -51,6 +51,6 @@ class varnish ($domain = undef,$backends = undef, $vhosts=undef) {
   }
   ufw::allow { 'allow-http':
     ip   => 'any',
-    port => 80
+    port => '80'
   }
 }
