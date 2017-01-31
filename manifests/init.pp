@@ -8,7 +8,7 @@ class varnish ($domain = undef,$backends = undef, $vhosts=undef) {
   package {'apache2':
     ensure => purged
   } ->
-  apt::ppa { 'ppa:ondrej/varnish': } ->
+  apt::ppa { 'ppa:ondrej/varnish': ensure => absent } ->
   package {'varnish':
     ensure => latest
   } ->
